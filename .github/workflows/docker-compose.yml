@@ -1,0 +1,22 @@
+name: Docker Compose CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Build Docker images
+        run: docker-compose build
+      
+      - name: Start containers
+        run: docker-compose up -d
+      
+      - name: Run database initialization script
+        run: docker-compose exec app python create_db.py
